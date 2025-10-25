@@ -1,3 +1,4 @@
+#include"DX12.h"
 #include <Windows.h>
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
 {
