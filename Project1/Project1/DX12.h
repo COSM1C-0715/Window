@@ -6,8 +6,12 @@
 class DX12
 {	
 public:
+	IDXGIFactory4* factory{};
+public:
 	DX12();
 	~DX12();
+
+	IDXGIFactory4* CreateDXGIFactory();
 
 	
 
