@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Clear.cpp" />
     <ClCompile Include="DX12.cpp" />
     <ClCompile Include="ソース.cpp" />
   </ItemGroup>
