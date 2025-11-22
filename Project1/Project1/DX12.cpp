@@ -20,11 +20,30 @@ DX12::~DX12()
         adapter->Release();
         adapter = nullptr;
     }
+    if (device)
+    {
+        device->Release();
+        device = nullptr;
+    }
+    if (commandQueue)
+    {
+        commandQueue->Release();
+        commandQueue = nullptr;
+    }
+    if (swapChain1)
+    {
+        swapChain1->Release();
+        swapChain1 = nullptr;
+    }
+    if (swapChain)
+    {
+        swapChain->Release();
+        swapChain = nullptr;
+    }
 }
 
 IDXGIFactory4* DX12::CreateDXGIFactory()
 {
-    IDXGIFactory4* factory;
     UINT createFactoryFlags = 0;
 
 #if defined(_DEBUG)
@@ -45,7 +64,6 @@ IDXGIFactory4* DX12::CreateDXGIFactory()
 
 IDXGIAdapter* DX12::GetHardwareAdapter(IDXGIFactory4* factory)
 {
-    IDXGIAdapter1* adapter;
     for (UINT adapterIndex = 0; ; ++adapterIndex)
     {
         adapter = nullptr;
@@ -76,7 +94,6 @@ IDXGIAdapter* DX12::GetHardwareAdapter(IDXGIFactory4* factory)
 
 ID3D12Device* DX12::CreateD3D12Device(IDXGIAdapter1* adapter)
 {
-    ID3D12Device* device;
     HRESULT hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device));
 
     if (FAILED(hr))
@@ -99,8 +116,7 @@ ID3D12CommandQueue* DX12::CreateCommandQueue(ID3D12Device* device)
     queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
     queueDesc.NodeMask = 0;
-
-    ID3D12CommandQueue* commandQueue;
+    
     HRESULT hr = device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&commandQueue));
 
     if(FAILED(hr))
@@ -121,8 +137,7 @@ IDXGISwapChain3* DX12::CreateSwapChain(IDXGIFactory4* factory,ID3D12CommandQueue
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
     swapChainDesc.SampleDesc.Count = 1;
-
-    IDXGISwapChain1* swapChain1;
+    
     HRESULT hr = factory->CreateSwapChainForHwnd(commandQueue, hwnd, &swapChainDesc, nullptr, nullptr, &swapChain1);
 
     if (FAILED(hr))
@@ -130,8 +145,7 @@ IDXGISwapChain3* DX12::CreateSwapChain(IDXGIFactory4* factory,ID3D12CommandQueue
         OutputDebugString("Failed to create Swap Chain\n");
         return nullptr;
     }
-
-    IDXGISwapChain3* swapChain;
+    
     hr = swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain));
     swapChain1->Release();
 
