@@ -133,7 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Crear.cpp" />
     <ClCompile Include="DX12.cpp" />
-    <ClCompile Include="ソース.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Crear.h" />

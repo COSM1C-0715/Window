@@ -6,8 +6,6 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxguid.lib")
-
-
 DX12::~DX12()
 {
     if (factory)
