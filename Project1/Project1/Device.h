@@ -1,13 +1,15 @@
 #include<d3d12.h>
 #include<dxgi1_4.h>
+#include"Adapter.h"
 #pragma once
 class Device
 {
 public:
 	ID3D12Device* device;
 public:
-	Device();
+	Device() = default;
 	~Device();
-	ID3D12Device* CreateD3D12Device(IDXGIAdapter1* adapter);
+	bool CreateD3D12Device(Adapter& adapter);
+	ID3D12Device* GetDevice();
 };
 

@@ -1,6 +1,6 @@
 #include "Device.h"
 #include<d3d12.h>
-#include<dxgi1_4.h>
+#include<cassert>
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -12,9 +12,9 @@ Device::~Device()
 		device = nullptr;
 	}
 }
-ID3D12Device* Device::CreateD3D12Device(IDXGIAdapter1* adapter)
+bool Device::CreateD3D12Device(Adapter& adapter)
 {
-    HRESULT hr = D3D12CreateDevice(adapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device));
+    HRESULT hr = D3D12CreateDevice(adapter.adapter(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device));
 
     if (FAILED(hr))
     {
@@ -23,9 +23,19 @@ ID3D12Device* Device::CreateD3D12Device(IDXGIAdapter1* adapter)
         if (FAILED(hr))
         {
             OutputDebugString("Failed to create D3D12 Device\n");
-            return nullptr;
+            return false;
         }
         OutputDebugString("Using software adapter (WARP)\n");
+    }
+    return true;
+}
+
+ID3D12Device* Device::GetDevice()
+{
+    if (!device)
+    {
+        assert(false && "デバイスがない");
+        return nullptr;
     }
     return device;
 }

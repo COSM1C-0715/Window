@@ -22,7 +22,7 @@ Crear::~Crear()
 	rn_tgt.clear();
 }
 
-ID3D12DescriptorHeap* Crear::Create(ID3D12Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors)
+ID3D12DescriptorHeap* Crear::Create(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors)
 {
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
 	rtvHeapDesc.NumDescriptors = 2;
@@ -31,7 +31,7 @@ ID3D12DescriptorHeap* Crear::Create(ID3D12Device& device, D3D12_DESCRIPTOR_HEAP_
 
 	_type = type;
 
-	HRESULT hr = device.CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
+	HRESULT hr = device.GetDevice()->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
 	return rtvHeap;
 }
 D3D12_DESCRIPTOR_HEAP_TYPE Crear::gettype()

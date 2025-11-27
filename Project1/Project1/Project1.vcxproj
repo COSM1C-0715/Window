@@ -131,13 +131,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Adapter.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Crear.cpp" />
+    <ClCompile Include="Device.cpp" />
     <ClCompile Include="DX12.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Swapchain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Adapter.h" />
+    <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Crear.h" />
+    <ClInclude Include="Device.h" />
     <ClInclude Include="DX12.h" />
+    <ClInclude Include="Swapchain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

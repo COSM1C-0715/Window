@@ -6,9 +6,10 @@ class Adapter
 public:
 	IDXGIAdapter1* Getadapter;
 public:
-	Adapter();
+	Adapter() = default;
 	~Adapter();
 
-	IDXGIAdapter* GetHardwareAdapter(IDXGIFactory4* factory);
+	bool GetHardwareAdapter(IDXGIFactory4* factory);
+	IDXGIAdapter1* adapter();
 };
 
