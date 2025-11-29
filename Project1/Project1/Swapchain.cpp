@@ -1,5 +1,5 @@
 #include "Swapchain.h"
-
+#include<cassert>
 Swapchain::~Swapchain()
 {
     if (swapChain1)
@@ -14,9 +14,8 @@ Swapchain::~Swapchain()
     }
 };
 
-IDXGISwapChain3* Swapchain::CreateSwapChain(IDXGIFactory4* factory, ID3D12CommandQueue* commandQueue, HWND hwnd)
+bool Swapchain::CreateSwapChain(DX12& factory, ID3D12CommandQueue* commandQueue, HWND hwnd)
 {
-    DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = 2;
     swapChainDesc.Width = 1280;
     swapChainDesc.Height = 720;
@@ -25,12 +24,12 @@ IDXGISwapChain3* Swapchain::CreateSwapChain(IDXGIFactory4* factory, ID3D12Comman
     swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
     swapChainDesc.SampleDesc.Count = 1;
 
-    HRESULT hr = factory->CreateSwapChainForHwnd(commandQueue, hwnd, &swapChainDesc, nullptr, nullptr, &swapChain1);
+    HRESULT hr = factory.Factory()->CreateSwapChainForHwnd(commandQueue, hwnd, &swapChainDesc, nullptr, nullptr, &swapChain1);
 
     if (FAILED(hr))
     {
         OutputDebugString("Failed to create Swap Chain\n");
-        return nullptr;
+        return false;
     }
 
     hr = swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain));
@@ -39,8 +38,27 @@ IDXGISwapChain3* Swapchain::CreateSwapChain(IDXGIFactory4* factory, ID3D12Comman
     if (FAILED(hr))
     {
         OutputDebugString("Failed to cast to SwapChain3\n");
-        return nullptr;
+        return false;
     }
 
-    return swapChain;
+    return true;
 };
+
+IDXGISwapChain3* Swapchain::GetSwapChain()
+{
+    if (!swapChain)
+    {
+        assert(false && "スワップチェインがない");
+        return nullptr;
+    }
+    return swapChain;
+}
+
+DXGI_SWAP_CHAIN_DESC1& Swapchain::GetDesc()
+{
+    if (!swapChain)
+    {
+        assert(false && "スワップチェインがなーーい");
+    }
+    return swapChainDesc;
+}

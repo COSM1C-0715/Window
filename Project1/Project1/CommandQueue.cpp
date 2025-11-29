@@ -1,6 +1,7 @@
 #include "CommandQueue.h"
 #include<d3d12.h>
 #include<dxgi1_4.h>
+#include<cassert>
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -12,9 +13,8 @@ CommandQueue::~CommandQueue()
 		commandQueue = nullptr;
 	}
 }
-ID3D12CommandQueue* CommandQueue::CreateCommandQueue(Device& device)
+bool CommandQueue::CreateCommandQueue(Device& device)
 {
-    D3D12_COMMAND_QUEUE_DESC queueDesc = {};
     queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
     queueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
@@ -25,7 +25,24 @@ ID3D12CommandQueue* CommandQueue::CreateCommandQueue(Device& device)
     if (FAILED(hr))
     {
         OutputDebugString("Failed to create Command Queue\n");
-        return nullptr;
+        return false;
+    }
+    return true;
+}
+ID3D12CommandQueue* CommandQueue::Getcommandqueue()
+{
+    if (!commandQueue)
+    {
+        assert(false && "コマンドキューがないですよ！！");
     }
     return commandQueue;
+}
+
+D3D12_COMMAND_QUEUE_DESC& CommandQueue::GetQueueDesc() 
+{
+    if (!commandQueue)
+    {
+        assert(false && "コマンドキューがなーい");
+    }
+    return queueDesc;
 }

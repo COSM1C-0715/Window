@@ -6,9 +6,13 @@ class CommandQueue
 {
 public:
 	ID3D12CommandQueue* commandQueue;
+
+	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 public:
 	CommandQueue() = default;
 	~CommandQueue();
-	ID3D12CommandQueue* CreateCommandQueue(Device& device);
+	bool CreateCommandQueue(Device& device);
+	ID3D12CommandQueue* Getcommandqueue();
+	D3D12_COMMAND_QUEUE_DESC& GetQueueDesc();
 };
 
