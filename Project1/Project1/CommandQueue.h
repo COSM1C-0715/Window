@@ -5,7 +5,7 @@
 class CommandQueue
 {
 public:
-	ID3D12CommandQueue* commandQueue;
+	ID3D12CommandQueue* commandQueue{};
 
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 public:

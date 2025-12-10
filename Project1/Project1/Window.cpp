@@ -1,5 +1,6 @@
-#include"DXGI.h"
-#include <Windows.h>
+#include "Window.h"
+#include<Windows.h>
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
 {
     switch (umsg)
@@ -10,15 +11,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
     }
     return DefWindowProc(hwnd, umsg, wParam, lParam);
 }
-int WINAPI WinMain(
-    HINSTANCE hInstance,      // アプリケーションの識別番号
-    HINSTANCE hPrevInstance,  // 基本使わなくていい
-    LPSTR lpCmdLine,          // コマンドライン引数（起動時のオプション）
-    int nCmdShow              // ウィンドウの表示方法（最大化、最小化など）
-)
+
+HRESULT Window::createWindow(HINSTANCE hInstance, int Width, int Height, std::string_view name)
 {
     WNDCLASS wc{};// ここにメインの処理を書く
-    
+
     // 1. ウィンドウクラス登録
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
@@ -27,7 +24,7 @@ int WINAPI WinMain(
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     RegisterClass(&wc);
     // 2. ウィンドウ作成
-    HWND hwnd = CreateWindow(
+    hwnd = CreateWindow(
         "GameWindow",
         "My Game",
         WS_OVERLAPPEDWINDOW,
@@ -36,13 +33,24 @@ int WINAPI WinMain(
         NULL, NULL,
         hInstance,
         NULL);
-    ShowWindow(hwnd, nCmdShow);
-    // 3. メッセージループ
+
+    ShowWindow(hwnd, SW_SHOW);
+
+    UpdateWindow(hwnd);
+
+    width = Width;
+    height = Height;
+
+    return S_OK;
+}
+
+bool Window::MassageLoop()
+{
     bool nextFrame = true;
     MSG msg{};
     while (nextFrame)
     {
-        while (PeekMessage(&msg, NULL, 0, 0,PM_REMOVE))
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             if (msg.message == WM_QUIT)
             {
@@ -52,6 +60,16 @@ int WINAPI WinMain(
             DispatchMessage(&msg);
         }
     }
-   
-    return 0;
+
+    return true;
+}
+
+HWND Window::Handle()
+{
+    return hwnd;
+}
+
+std::pair<int, int> Window::size()
+{
+    return {width,height};
 }

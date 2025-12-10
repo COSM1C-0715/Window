@@ -1,6 +1,6 @@
 #include<d3d12.h>
 #include<dxgi1_4.h>
-#include"Adapter.h"
+#include"DXGI.h"
 #pragma once
 class Device
 {
@@ -9,7 +9,7 @@ public:
 public:
 	Device() = default;
 	~Device();
-	bool CreateD3D12Device(Adapter& adapter);
+	bool CreateD3D12Device(DXGI& adapter);
 	ID3D12Device* GetDevice();
 };
 

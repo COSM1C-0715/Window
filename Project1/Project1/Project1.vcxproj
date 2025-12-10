@@ -131,21 +131,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Adapter.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="Crear.cpp" />
+    <ClCompile Include="Command_Allocator.cpp" />
+    <ClCompile Include="Command_List.cpp" />
+    <ClCompile Include="Fence.cpp" />
+    <ClCompile Include="Descriptor_Heap.cpp" />
     <ClCompile Include="Device.cpp" />
-    <ClCompile Include="DX12.cpp" />
+    <ClCompile Include="DXGI.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Render_Target.cpp" />
     <ClCompile Include="Swapchain.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adapter.h" />
     <ClInclude Include="CommandQueue.h" />
-    <ClInclude Include="Crear.h" />
+    <ClInclude Include="Command_Allocator.h" />
+    <ClInclude Include="Command_List.h" />
+    <ClInclude Include="Fence.h" />
+    <ClInclude Include="Descriptor_Heap.h" />
     <ClInclude Include="Device.h" />
-    <ClInclude Include="DX12.h" />
+    <ClInclude Include="DXGI.h" />
+    <ClInclude Include="Render_Target.h" />
     <ClInclude Include="Swapchain.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

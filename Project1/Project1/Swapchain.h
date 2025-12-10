@@ -1,6 +1,8 @@
 #include<d3d12.h>
 #include<dxgi1_4.h>
-#include"DX12.h"
+#include"DXGI.h"
+#include"CommandQueue.h"
+#include"Window.h"
 #pragma once
 class Swapchain
 {
@@ -13,7 +15,7 @@ public:
 public:
 	Swapchain() = default;
 	~Swapchain();
-	bool CreateSwapChain(DX12& factory, ID3D12CommandQueue* commandQueue, HWND hwnd);
+	bool CreateSwapChain(DXGI& factory, CommandQueue& commandQueue, Window& window);
 	IDXGISwapChain3* GetSwapChain();
 	DXGI_SWAP_CHAIN_DESC1& GetDesc();
 };
