@@ -21,17 +21,17 @@ HRESULT Window::createWindow(HINSTANCE hInstance, int Width, int Height, std::st
     // 1. ウィンドウクラス登録
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = "GameWindow";
+    wc.lpszClassName = name.data();
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     RegisterClass(&wc);
     // 2. ウィンドウ作成
     hwnd = CreateWindow(
-        "GameWindow",
-        "My Game",
+        wc.lpszClassName,
+        wc.lpszClassName,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        800, 600,
+        Width,Height,
         NULL, NULL,
         hInstance,
         NULL);

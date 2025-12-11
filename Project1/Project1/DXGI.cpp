@@ -44,10 +44,10 @@ bool DXGI::SetDisplayAdapter()
     {
         auto select = 0;
         IDXGIAdapter1* Getadapter_{};
-        while(factory->EnumAdapters1(select,&Getadapter))
+        while(factory->EnumAdapters1(select,&Getadapter_) != DXGI_ERROR_NOT_FOUND)
         {
-            DXGI_ADAPTER_DESC1 desc;
-            Getadapter->GetDesc1(&desc);
+            DXGI_ADAPTER_DESC1 desc{};
+            Getadapter_->GetDesc1(&desc);
             select++;
             if (desc.Flags && DXGI_ADAPTER_FLAG_SOFTWARE)
             {
@@ -55,7 +55,7 @@ bool DXGI::SetDisplayAdapter()
                 continue;
             }
 
-            if (FAILED(D3D12CreateDevice(Getadapter, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), nullptr)))
+            if (FAILED(D3D12CreateDevice(Getadapter_, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), nullptr)))
             {
                 continue;
             }

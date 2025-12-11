@@ -102,7 +102,7 @@ public:
 			D3D12_CPU_DESCRIPTOR_HANDLE handles[] = { R_Instance.gethandle(D_Instance,DH_Instance,bckbffrIndex) };
 			CL_Instance.GetCommandList()->OMSetRenderTargets(1, handles, false, nullptr);
 
-			float clearColor[] = {0.0f,0.0f,1.0f,1.0f};
+			float clearColor[] = {0.2f,0.6f,0.3f,1.0f};
 			CL_Instance.GetCommandList()->ClearRenderTargetView(handles[0], clearColor, 0, nullptr);
 
 			auto rtToP = resourceBarrier(R_Instance.GetResource(bckbffrIndex), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
