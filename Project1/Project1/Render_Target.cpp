@@ -22,9 +22,16 @@ bool Render_Target::CreateBckBffr(Device& device, Swapchain& swapchain, Descript
 
 	auto type = heap.gettype();
 
+	assert(type == D3D12_DESCRIPTOR_HEAP_TYPE_RTV && "ディスクリプタヒープのタイプが RTV ではありません");
+
 	for (uint8_t i = 0;i < Desc.BufferCount; ++i)
 	{
-		auto ht = swapchain.GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&rn_tgt[i]));
+		auto hr = swapchain.GetSwapChain()->GetBuffer(i, IID_PPV_ARGS(&rn_tgt[i]));
+
+		if (FAILED(hr))
+		{
+			assert(false && "バックバッファの取得に失敗");
+		}
 
 		device.GetDevice()->CreateRenderTargetView(rn_tgt[i], nullptr, handle);
 
@@ -53,7 +60,8 @@ D3D12_CPU_DESCRIPTOR_HANDLE Render_Target::gethandle(Device& device, Descriptor_
 
 ID3D12Resource* Render_Target::GetResource(uint32_t index)
 {
-	if(index >= rn_tgt.size() || !rn_tgt[index]) {
+	if(index >= rn_tgt.size() || !rn_tgt[index]) 
+	{
 		assert(false && "不正なレンダーターゲットです");
 		return nullptr;
 	}

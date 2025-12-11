@@ -11,7 +11,7 @@ public:
 	Window() = default;
 	~Window() = default;
 
-	HRESULT createWindow(HINSTANCE hInstance,int Width,int Height,std::string_view name);
+	HRESULT createWindow(HINSTANCE hInstance,int Width_,int Height_,std::string_view name);
 
 	bool MassageLoop();
 

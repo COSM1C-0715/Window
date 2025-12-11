@@ -34,15 +34,7 @@ ID3D12CommandQueue* CommandQueue::Getcommandqueue()
     if (!commandQueue)
     {
         assert(false && "コマンドキューがないですよ！！");
+        return nullptr;
     }
     return commandQueue;
-}
-
-D3D12_COMMAND_QUEUE_DESC& CommandQueue::GetQueueDesc() 
-{
-    if (!commandQueue)
-    {
-        assert(false && "コマンドキューがなーい");
-    }
-    return queueDesc;
 }

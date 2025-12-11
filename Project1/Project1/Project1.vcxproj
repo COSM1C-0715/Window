@@ -134,11 +134,13 @@
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Command_Allocator.cpp" />
     <ClCompile Include="Command_List.cpp" />
+    <ClCompile Include="Draw_Rsource.cpp" />
     <ClCompile Include="Fence.cpp" />
     <ClCompile Include="Descriptor_Heap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DXGI.cpp" />
     <ClCompile Include="Render_Target.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -147,11 +149,13 @@
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Command_Allocator.h" />
     <ClInclude Include="Command_List.h" />
+    <ClInclude Include="Draw_Rsource.h" />
     <ClInclude Include="Fence.h" />
     <ClInclude Include="Descriptor_Heap.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DXGI.h" />
     <ClInclude Include="Render_Target.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Swapchain.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

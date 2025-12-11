@@ -14,7 +14,7 @@ Device::~Device()
 }
 bool Device::CreateD3D12Device(DXGI& adapter)
 {
-    HRESULT hr = D3D12CreateDevice(adapter.adapter(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device));
+    HRESULT hr = D3D12CreateDevice(adapter.adapter(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&device));
 
     if (FAILED(hr))
     {

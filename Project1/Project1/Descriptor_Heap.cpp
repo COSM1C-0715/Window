@@ -9,12 +9,12 @@ Descriptor_Heap::~Descriptor_Heap()
 	}
 }
 
-bool Descriptor_Heap::Create(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors)
+bool Descriptor_Heap::Create(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors,bool shaderVisible)
 {
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
-	rtvHeapDesc.NumDescriptors = 2;
+	rtvHeapDesc.NumDescriptors = numDescriptors;
 	rtvHeapDesc.Type = type;
-	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	rtvHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	_type = type;
 

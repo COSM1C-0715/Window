@@ -14,7 +14,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
     return DefWindowProc(hwnd, umsg, wParam, lParam);
 }
 
-HRESULT Window::createWindow(HINSTANCE hInstance, int Width, int Height, std::string_view name)
+HRESULT Window::createWindow(HINSTANCE hInstance, int Width_, int Height_, std::string_view name)
 {
     WNDCLASS wc{};// ‚±‚±‚ÉƒƒCƒ“‚Ìˆ—‚ğ‘‚­
 
@@ -75,8 +75,3 @@ std::pair<int, int> Window::size()
 {
     return {width,height};
 }
-
-struct Vertex
-{
-    
-};

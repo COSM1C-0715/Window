@@ -11,7 +11,7 @@ public:
 public:
 	Descriptor_Heap() = default;
 	~Descriptor_Heap();
-	bool Create(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors);
+	bool Create(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool shaderVisible = false);
 	ID3D12DescriptorHeap* GetHeap();
 	D3D12_DESCRIPTOR_HEAP_TYPE gettype();
 };

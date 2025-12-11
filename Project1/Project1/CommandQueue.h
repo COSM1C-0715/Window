@@ -13,6 +13,5 @@ public:
 	~CommandQueue();
 	bool CreateCommandQueue(Device& device);
 	ID3D12CommandQueue* Getcommandqueue();
-	D3D12_COMMAND_QUEUE_DESC& GetQueueDesc();
 };
 
