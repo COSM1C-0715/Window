@@ -40,7 +40,7 @@ D3D12_DESCRIPTOR_HEAP_TYPE Descriptor_Heap::gettype()
 {
 	if (!rtvHeap)
 	{
-		return;
+		assert(false&&"ヒープタイプがなーい");
 	}
 	return _type;
 }

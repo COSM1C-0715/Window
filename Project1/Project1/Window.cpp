@@ -1,5 +1,7 @@
 #include "Window.h"
 #include<Windows.h>
+#include<d3d12.h>
+#include <dxgi1_4.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
 {
@@ -73,3 +75,8 @@ std::pair<int, int> Window::size()
 {
     return {width,height};
 }
+
+struct Vertex
+{
+    
+};

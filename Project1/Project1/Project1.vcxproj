@@ -138,7 +138,6 @@
     <ClCompile Include="Descriptor_Heap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DXGI.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Render_Target.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Entry.cpp" />
