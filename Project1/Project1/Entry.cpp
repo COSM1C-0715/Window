@@ -11,6 +11,10 @@
 #include"Render_Target.h"
 #include"Fence.h"
 #include"Window.h"
+#include"Root_Signature.h"
+#include"Shader.h"
+#include"Pipline_state_object.h"
+#include"Draw_Rsource.h"
 
 class Application
 {
@@ -78,6 +82,27 @@ public:
 			assert(false && "フェンスが......ない!");
 			return false;
 		}
+
+		if (!DR_Instance.Create(D_Instance))
+		{
+			assert(false&&"三角形ポリゴンが...ない！");
+			return false;
+		}
+		if (!RS_Instance.Create(D_Instance))
+		{
+			assert(false && "ルートシグネチャーが...ない！");
+			return false;
+		}
+		if (!SH_Instance.Create(D_Instance))
+		{
+			assert(false && "シェーダーが...ない！");
+			return false;
+		}
+		if (!PSO_Instance.Create(D_Instance,SH_Instance,RS_Instance))
+		{
+			assert(false && "パイプラインステートオブジェクトが...ない！");
+			return false;
+		}
 		return true;
 	}
 
@@ -104,6 +129,29 @@ public:
 
 			float clearColor[] = {0.2f,0.6f,0.3f,1.0f};
 			CL_Instance.GetCommandList()->ClearRenderTargetView(handles[0], clearColor, 0, nullptr);
+
+			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
+
+			CL_Instance.GetCommandList()->SetGraphicsRootSignature(RS_Instance.GetSignature());
+
+			auto [w, h] = W_Instance.size();
+			D3D12_VIEWPORT viewport{};
+			viewport.TopLeftX = 0.0f;
+			viewport.TopLeftY = 0.0f;
+			viewport.Width = static_cast<float>(w);
+			viewport.Height = static_cast<float>(h);
+			viewport.MinDepth = 0.0f;
+			viewport.MaxDepth = 1.0f;
+			CL_Instance.GetCommandList()->RSSetViewports(1,&viewport);
+
+			D3D12_RECT scissorRect{};
+			scissorRect.left = 0;
+			scissorRect.top = 0;
+			scissorRect.right = 0;
+			scissorRect.bottom = 0;
+			CL_Instance.GetCommandList()->RSSetScissorRects(1,&scissorRect);
+
+			DR_Instance.Draw(CL_Instance);
 
 			auto rtToP = resourceBarrier(R_Instance.GetResource(bckbffrIndex), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 			CL_Instance.GetCommandList()->ResourceBarrier(1, &rtToP);
@@ -147,6 +195,11 @@ private:
 	Fence F_Instance{};
 	UINT64 FrameFenceValue[2]{};
 	UINT64 nextFenceValue = 1;
+
+	Root_Signature RS_Instance{};
+	Shader SH_Instance{};
+	Pipline_state_object PSO_Instance{};
+	Draw_Rsource DR_Instance{};
 };
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)

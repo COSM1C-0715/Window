@@ -26,7 +26,15 @@ Draw_Rsource::~Draw_Rsource()
 
 bool Draw_Rsource::Create(Device& device)
 {
-	
+	if (!createVertexBuffer(device))
+	{
+		return false;
+	}
+	if (!createIndexBuffer(device))
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Draw_Rsource::createVertexBuffer(Device& device)

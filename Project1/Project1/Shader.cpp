@@ -30,6 +30,14 @@ bool Shader::Create(Device& device)
 	if (FAILED(res))
 	{
 		char* p = static_cast<char*>(error->GetBufferPointer());
+		assert(false && "頂点シェーダのコンパイルに失敗しちゃった");
+	}
+
+	res = D3DCompileFromFile(temp.data(), nullptr, nullptr, "ps", "ps_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &PixcelShader, &error);
+
+	if (FAILED(res))
+	{
+		char* p = static_cast<char*>(error->GetBufferPointer());
 		assert(false&&"ピクセルシェーダのコンパイルに失敗しちゃった");
 	}
 
