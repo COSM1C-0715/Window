@@ -31,7 +31,7 @@ HRESULT Window::createWindow(HINSTANCE hInstance, int Width_, int Height_, std::
         wc.lpszClassName,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        Width,Height,
+        Width_,Height_,
         NULL, NULL,
         hInstance,
         NULL);
@@ -40,8 +40,8 @@ HRESULT Window::createWindow(HINSTANCE hInstance, int Width_, int Height_, std::
 
     UpdateWindow(hwnd);
 
-    width = Width;
-    height = Height;
+    width = Width_;
+    height = Height_;
 
     return S_OK;
 }

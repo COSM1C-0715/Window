@@ -31,13 +31,14 @@ bool Draw_Rsource::Create(Device& device)
 
 bool Draw_Rsource::createVertexBuffer(Device& device)
 {
-	Vertex triangleVertices[] = {
+	Vertex triangleVertices[] = 
+	{
 		{{0.0f,0.5f,0.0f},{1.0f,0.0f,0.0f,1.0f}},
 		{{0.5f,-0.5f,0.0f},{0.0f,1.0f,0.0f,1.0f}},
 		{{-0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}}
 	};
 
-	auto vertexBufferSize = (triangleVertices);
+	auto vertexBufferSize = sizeof(triangleVertices);
 
 	D3D12_HEAP_PROPERTIES heapProperty{};
 	heapProperty.Type = D3D12_HEAP_TYPE_UPLOAD;

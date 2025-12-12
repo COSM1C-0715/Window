@@ -139,7 +139,9 @@
     <ClCompile Include="Descriptor_Heap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DXGI.cpp" />
+    <ClCompile Include="Pipline_state_object.cpp" />
     <ClCompile Include="Render_Target.cpp" />
+    <ClCompile Include="Root_Signature.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Swapchain.cpp" />
     <ClCompile Include="Entry.cpp" />
@@ -154,10 +156,20 @@
     <ClInclude Include="Descriptor_Heap.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DXGI.h" />
+    <ClInclude Include="Pipline_state_object.h" />
     <ClInclude Include="Render_Target.h" />
+    <ClInclude Include="Root_Signature.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Swapchain.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
