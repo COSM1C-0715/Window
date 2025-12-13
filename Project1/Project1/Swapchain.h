@@ -7,8 +7,6 @@
 class Swapchain
 {
 public:
-	IDXGISwapChain1* swapChain1;
-
 	IDXGISwapChain3* swapChain;
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};

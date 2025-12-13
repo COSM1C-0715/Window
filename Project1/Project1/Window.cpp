@@ -50,8 +50,6 @@ bool Window::MassageLoop()
 {
     bool nextFrame = true;
     MSG msg{};
-    while (nextFrame)
-    {
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             if (msg.message == WM_QUIT)
@@ -61,7 +59,6 @@ bool Window::MassageLoop()
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-    }
 
     return true;
 }

@@ -147,8 +147,8 @@ public:
 			D3D12_RECT scissorRect{};
 			scissorRect.left = 0;
 			scissorRect.top = 0;
-			scissorRect.right = 0;
-			scissorRect.bottom = 0;
+			scissorRect.right = w;
+			scissorRect.bottom = h;
 			CL_Instance.GetCommandList()->RSSetScissorRects(1,&scissorRect);
 
 			DR_Instance.Draw(CL_Instance);

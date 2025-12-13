@@ -2,11 +2,6 @@
 #include<cassert>
 Swapchain::~Swapchain()
 {
-    if (swapChain1)
-    {
-        swapChain1->Release();
-        swapChain1 = nullptr;
-    }
     if (swapChain)
     {
         swapChain->Release();
@@ -16,6 +11,8 @@ Swapchain::~Swapchain()
 
 bool Swapchain::CreateSwapChain(DXGI& factory, CommandQueue& commandQueue, Window& window)
 {
+    IDXGISwapChain1* swapChain1{};
+
     auto [w, h] = window.size();
     swapChainDesc.BufferCount = 2;
     swapChainDesc.Width = w;
