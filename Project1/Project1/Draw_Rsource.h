@@ -2,6 +2,7 @@
 #include <dxgi1_4.h>
 #include"Device.h"
 #include"Command_List.h"
+#include<DirectXMath.h>
 #pragma once
 class Draw_Rsource
 {
@@ -15,10 +16,14 @@ public:
 	Draw_Rsource() = default;
 	~Draw_Rsource();
 
+	struct ConstBufferData
+	{
+		DirectX::XMMATRIX world{};
+		DirectX::XMFLOAT4 color{};
+	};
 	bool createVertexBuffer(Device& device);
 	bool createIndexBuffer(Device& device);
 
 	void Draw(Command_List& commandlist);
 	bool Create(Device& device);
 };
-

@@ -14,6 +14,11 @@
 #include"Root_Signature.h"
 #include"Shader.h"
 #include"Pipline_state_object.h"
+#include"Depth_buffer.h"
+
+#include"Constant_buffer.h"
+#include"Camera.h"
+#include"Object.h"
 #include"Draw_Rsource.h"
 
 class Application
@@ -103,6 +108,34 @@ public:
 			assert(false && "パイプラインステートオブジェクトが...ない！");
 			return false;
 		}
+
+		Camera_Instance.initialize();
+
+		if (!ConstantBufferDH_Instance.Create(D_Instance,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,2,true))
+		{
+			assert(false&&"定数バッファ用ディスクリプターヒープが...ない！");
+			return false;
+		}
+		if (!CameraConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Camera::ConstBufferData),0))
+		{
+			assert(false&&"カメラ用コンスタントバッファが...ない！");
+			return false;
+		}
+		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Draw_Rsource::ConstBufferData),1))
+		{
+			assert(false&&"三角形ポリゴン用コンスタントバッファが...ない！");
+			return false;
+		}
+		if (!depthBufferDescriptorHeapInstance.Create(D_Instance,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1))
+		{
+			assert(false && "デプスバッファ用ディスクリプターヒープが...ない！");
+			return false;
+		}
+		if (!DB_Instance.CreateDepthBuffer(D_Instance, depthBufferDescriptorHeapInstance, W_Instance))
+		{
+			assert(false && "デプスバッファ用ディスクリプターヒープが...ない！");
+			return false;
+		}
 		return true;
 	}
 
@@ -110,6 +143,10 @@ public:
 	{
 		while (W_Instance.MassageLoop())
 		{
+			Camera_Instance.update();
+
+			TriangleObjectInstance.update();
+
 			auto bckbffrIndex = S_Instance.GetSwapChain()->GetCurrentBackBufferIndex();
 
 			if (FrameFenceValue[bckbffrIndex] != 0)
@@ -127,7 +164,7 @@ public:
 			D3D12_CPU_DESCRIPTOR_HANDLE handles[] = { R_Instance.gethandle(D_Instance,DH_Instance,bckbffrIndex) };
 			CL_Instance.GetCommandList()->OMSetRenderTargets(1, handles, false, nullptr);
 
-			float clearColor[] = {0.2f,0.6f,0.3f,1.0f};
+			float clearColor[] = {0.1f,0.35f,0.24f,0.2f};
 			CL_Instance.GetCommandList()->ClearRenderTargetView(handles[0], clearColor, 0, nullptr);
 
 			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
@@ -151,8 +188,38 @@ public:
 			scissorRect.bottom = h;
 			CL_Instance.GetCommandList()->RSSetScissorRects(1,&scissorRect);
 
-			DR_Instance.Draw(CL_Instance);
+			ID3D12DescriptorHeap* p[] = {ConstantBufferDH_Instance.GetHeap()};
+			CL_Instance.GetCommandList()->SetDescriptorHeaps(1,p);
 
+			Camera::ConstBufferData cameraData
+			{
+				DirectX::XMMatrixTranspose(Camera_Instance.ViewMatrix()),
+				DirectX::XMMatrixTranspose(Camera_Instance.Projection()),
+			};
+
+			UINT8* pCameraData{};
+
+			CameraConstantBufferInstance.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&pCameraData));
+			memcpy_s(pCameraData, sizeof(cameraData), &cameraData, sizeof(cameraData));
+			CameraConstantBufferInstance.ConstantBuffer()->Unmap(0,nullptr);
+			CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(0, CameraConstantBufferInstance.getGpuDescriptorHandle());
+
+			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
+
+			{
+				Draw_Rsource::ConstBufferData triangleData
+				{
+					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
+					TriangleObjectInstance.Color()
+				};
+				UINT8* ptriangleData{};
+				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&ptriangleData));
+				memcpy_s(ptriangleData, sizeof(triangleData), &triangleData, sizeof(triangleData));
+				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
+				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1,TrianglePolygonConstantBufferInstance.getGpuDescriptorHandle());
+
+				DR_Instance.Draw(CL_Instance);
+			}
 			auto rtToP = resourceBarrier(R_Instance.GetResource(bckbffrIndex), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 			CL_Instance.GetCommandList()->ResourceBarrier(1, &rtToP);
 
@@ -199,7 +266,17 @@ private:
 	Root_Signature RS_Instance{};
 	Shader SH_Instance{};
 	Pipline_state_object PSO_Instance{};
+	Descriptor_Heap ConstantBufferDH_Instance{};
+
 	Draw_Rsource DR_Instance{};
+	Object TriangleObjectInstance{};
+	Constant_buffer TrianglePolygonConstantBufferInstance{};
+
+	Camera Camera_Instance{};
+	Constant_buffer CameraConstantBufferInstance{};
+
+	Descriptor_Heap depthBufferDescriptorHeapInstance{};
+	Depth_buffer DB_Instance{};
 };
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)

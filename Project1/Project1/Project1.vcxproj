@@ -131,14 +131,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Command_Allocator.cpp" />
     <ClCompile Include="Command_List.cpp" />
+    <ClCompile Include="Constant_buffer.cpp" />
+    <ClCompile Include="Depth_buffer.cpp" />
     <ClCompile Include="Draw_Rsource.cpp" />
     <ClCompile Include="Fence.cpp" />
     <ClCompile Include="Descriptor_Heap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DXGI.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Pipline_state_object.cpp" />
     <ClCompile Include="Render_Target.cpp" />
     <ClCompile Include="Root_Signature.cpp" />
@@ -148,14 +153,19 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Command_Allocator.h" />
     <ClInclude Include="Command_List.h" />
+    <ClInclude Include="Constant_buffer.h" />
+    <ClInclude Include="Depth_buffer.h" />
     <ClInclude Include="Draw_Rsource.h" />
     <ClInclude Include="Fence.h" />
     <ClInclude Include="Descriptor_Heap.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DXGI.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Pipline_state_object.h" />
     <ClInclude Include="Render_Target.h" />
     <ClInclude Include="Root_Signature.h" />

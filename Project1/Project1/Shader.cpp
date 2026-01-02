@@ -38,7 +38,7 @@ bool Shader::Create(Device& device)
 	if (FAILED(res))
 	{
 		char* p = static_cast<char*>(error->GetBufferPointer());
-		assert(false&&"ピクセルシェーダのコンパイルに失敗しちゃった");
+		assert(false&&"ピクセルシェーダのコンパイルに失敗しちゃった"); 
 	}
 
 	if (error)

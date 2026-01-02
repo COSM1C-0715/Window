@@ -1,5 +1,6 @@
 #include<d3d12.h>
 #include<dxgi1_4.h>
+#include<cassert>
 #include"Device.h"
 #pragma once
 class Descriptor_Heap

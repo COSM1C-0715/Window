@@ -1,6 +1,5 @@
 #include "Draw_Rsource.h"
 #include<cassert>
-#include<DirectXMath.h>
 namespace 
 {
 	struct Vertex
@@ -41,9 +40,9 @@ bool Draw_Rsource::createVertexBuffer(Device& device)
 {
 	Vertex triangleVertices[] = 
 	{
-		{{0.0f,0.5f,0.0f},{1.0f,0.0f,0.0f,1.0f}},
-		{{0.5f,-0.5f,0.0f},{0.0f,1.0f,0.0f,1.0f}},
-		{{-0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}}
+		{{-0.5f,0.5f,0.0f},{1.0f,0.0f,1.0f,1.0f}},
+		{{0.5f,0.5f,0.0f},{0.0f,1.0f,1.0f,1.0f}},
+		{{0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}},
 	};
 
 	auto vertexBufferSize = sizeof(triangleVertices);
@@ -99,7 +98,8 @@ bool Draw_Rsource::createVertexBuffer(Device& device)
 
 bool Draw_Rsource::createIndexBuffer(Device& device)
 {
-	uint16_t triangleIndices[] = {
+	uint16_t triangleIndices[] = 
+	{
 			0,1,2
 	};
 

@@ -22,6 +22,31 @@ bool Pipline_state_object::Create(Device& device,Shader& shader,Root_Signature& 
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
+	D3D12_DEPTH_STENCIL_DESC depthStateDesc{};
+	depthStateDesc.DepthEnable = true;
+	depthStateDesc.StencilEnable = false;
+	depthStateDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthStateDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+
+	D3D12_RENDER_TARGET_BLEND_DESC renderTargetBlendDesc{};
+	renderTargetBlendDesc.BlendEnable = true;
+
+	renderTargetBlendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	renderTargetBlendDesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	renderTargetBlendDesc.BlendOp = D3D12_BLEND_OP_ADD;
+
+	renderTargetBlendDesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	renderTargetBlendDesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+	renderTargetBlendDesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+
+	renderTargetBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+
+	D3D12_BLEND_DESC blendDesc{};
+	for (UINT i = 0;i < D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT;++i)
+	{
+		blendDesc.RenderTarget[i] = renderTargetBlendDesc;
+	}
+
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
@@ -35,26 +60,6 @@ bool Pipline_state_object::Create(Device& device,Shader& shader,Root_Signature& 
 	rasterizerDesc.ForcedSampleCount = 0;
 	rasterizerDesc.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
 
-	D3D12_RENDER_TARGET_BLEND_DESC defaultRenderTargetBlendDesc = {
-		FALSE,
-		FALSE,
-		D3D12_BLEND_ONE,
-		D3D12_BLEND_ZERO,
-		D3D12_BLEND_OP_ADD,
-		D3D12_BLEND_ONE,
-		D3D12_BLEND_ZERO,
-		D3D12_BLEND_OP_ADD,
-		D3D12_LOGIC_OP_NOOP,
-		D3D12_COLOR_WRITE_ENABLE_ALL,
-	};
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.AlphaToCoverageEnable = false;
-	blendDesc.IndependentBlendEnable = false;
-	for (UINT i = 0;i < D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT;++i)
-	{
-		blendDesc.RenderTarget[i] = defaultRenderTargetBlendDesc;
-	}
-
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 	psoDesc.InputLayout = { inputElementDescs,_countof(inputElementDescs) };
 	psoDesc.pRootSignature = rootSignature.GetSignature();
@@ -62,8 +67,8 @@ bool Pipline_state_object::Create(Device& device,Shader& shader,Root_Signature& 
 	psoDesc.PS = { shader.pixcelShader()->GetBufferPointer(),shader.pixcelShader()->GetBufferSize() };
 	psoDesc.RasterizerState = rasterizerDesc;
 	psoDesc.BlendState = blendDesc;
-	psoDesc.DepthStencilState.DepthEnable = false;
-	psoDesc.DepthStencilState.StencilEnable = false;
+	psoDesc.DepthStencilState = depthStateDesc;
+	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.NumRenderTargets = 1;
