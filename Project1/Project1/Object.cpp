@@ -1,6 +1,13 @@
 #include "Object.h"
 #include<cmath>
 
+void Object::initialize(DirectX::XMFLOAT3 pos, DirectX::XMFLOAT4 color_)
+{
+	world = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+
+	color = color_;
+}
+
 void Object::update()
 {
 	move += 0.02f;

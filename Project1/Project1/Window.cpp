@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Input.h"
 #include<Windows.h>
 #include<d3d12.h>
 #include <dxgi1_4.h>
@@ -58,6 +59,12 @@ bool Window::MassageLoop()
             }
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+
+            static byte keyState[256]{};
+            if (GetKeyboardState(keyState))
+            {
+                Input::instance().updateKeyState(keyState);
+            }
         }
 
     return true;

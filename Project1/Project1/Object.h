@@ -8,7 +8,7 @@ private:
 
 	float move{};
 public:
-	struct ConstBufferData
+	struct ConstBuffer
 	{
 		DirectX::XMMATRIX world{};
 		DirectX::XMFLOAT4 color{};
@@ -16,6 +16,8 @@ public:
 public:
 	Object() = default;
 	~Object() = default;
+
+	void initialize(DirectX::XMFLOAT3 pos,DirectX::XMFLOAT4 color);
 
 	void update();
 

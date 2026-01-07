@@ -1,4 +1,4 @@
-#include "Draw_Rsource.h"
+#include "Quad_polygon.h"
 #include<cassert>
 namespace 
 {
@@ -9,7 +9,7 @@ namespace
 	};
 }
 
-Draw_Rsource::~Draw_Rsource()
+Quad_polygon::~Quad_polygon()
 {
 	if (VertexBuffer)
 	{
@@ -23,7 +23,7 @@ Draw_Rsource::~Draw_Rsource()
 	}
 }
 
-bool Draw_Rsource::Create(Device& device)
+bool Quad_polygon::Create(Device& device)
 {
 	if (!createVertexBuffer(device))
 	{
@@ -36,7 +36,7 @@ bool Draw_Rsource::Create(Device& device)
 	return true;
 }
 
-bool Draw_Rsource::createVertexBuffer(Device& device)
+bool Quad_polygon::createVertexBuffer(Device& device)
 {
 	Vertex triangleVertices[] = 
 	{
@@ -96,7 +96,7 @@ bool Draw_Rsource::createVertexBuffer(Device& device)
 	return true;
 }
 
-bool Draw_Rsource::createIndexBuffer(Device& device)
+bool Quad_polygon::createIndexBuffer(Device& device)
 {
 	uint16_t triangleIndices[] = 
 	{
@@ -153,7 +153,7 @@ bool Draw_Rsource::createIndexBuffer(Device& device)
 	return true;
 }
 
-void Draw_Rsource::Draw(Command_List& commandlist)
+void Quad_polygon::Draw(Command_List& commandlist)
 {
 	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView);
 	commandlist.GetCommandList()->IASetIndexBuffer(&IndexBufferView);

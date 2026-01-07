@@ -4,7 +4,7 @@
 #include"Command_List.h"
 #include<DirectXMath.h>
 #pragma once
-class Draw_Rsource
+class Quad_polygon
 {
 public:
 	ID3D12Resource* VertexBuffer;
@@ -13,10 +13,10 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW VertexBufferView;
 	D3D12_INDEX_BUFFER_VIEW IndexBufferView;
 public:
-	Draw_Rsource() = default;
-	~Draw_Rsource();
+	Quad_polygon() = default;
+	~Quad_polygon();
 
-	struct ConstBufferData
+	struct ConstBuffer
 	{
 		DirectX::XMMATRIX world{};
 		DirectX::XMFLOAT4 color{};

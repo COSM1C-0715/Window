@@ -10,7 +10,7 @@ private:
 	DirectX::XMFLOAT3 target{};
 	DirectX::XMFLOAT3 up{};
 public:
-	struct ConstBufferData
+	struct ConstBuffer
 	{
 		DirectX::XMMATRIX view{};
 		DirectX::XMMATRIX projection{};

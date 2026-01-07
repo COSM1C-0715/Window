@@ -1,9 +1,10 @@
 #include "Camera.h"
+#include "Input.h"
 #include<cmath>
 
 namespace
 {
-	float eyeMoveSpeed = 0.06f;
+	float eyeMoveSpeed = 1.0f;
 	float destTargetToView = -5.0f;
 }
 
@@ -21,9 +22,19 @@ void Camera::initialize()
 void Camera::update()
 {
 	static float angle = 0.0f;
-	angle += eyeMoveSpeed;
-	position.x = destTargetToView * std::sinf(angle);
-	position.z = destTargetToView * std::cosf(angle);
+
+	if (Input::instance().getKey(VK_LEFT))
+	{
+		angle += eyeMoveSpeed;
+		position.x = destTargetToView * std::sinf(angle);
+		position.z = destTargetToView * std::cosf(angle);
+	}
+	else if (Input::instance().getKey(VK_RIGHT))
+	{
+		angle -= eyeMoveSpeed;
+		position.x = destTargetToView * std::sinf(angle);
+		position.z = destTargetToView * std::cosf(angle);
+	}
 
 	view = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&target), DirectX::XMLoadFloat3(&up));
 }

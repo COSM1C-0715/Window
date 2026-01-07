@@ -19,7 +19,7 @@
 #include"Constant_buffer.h"
 #include"Camera.h"
 #include"Object.h"
-#include"Draw_Rsource.h"
+#include"Quad_polygon.h"
 
 class Application
 {
@@ -88,11 +88,14 @@ public:
 			return false;
 		}
 
-		if (!DR_Instance.Create(D_Instance))
+		if (!QP_Instance.Create(D_Instance))
 		{
 			assert(false&&"三角形ポリゴンが...ない！");
 			return false;
 		}
+		
+		TriangleObjectInstance.initialize({ 0.2f,0.0f,-0.1f }, {1,1,1,1});
+
 		if (!RS_Instance.Create(D_Instance))
 		{
 			assert(false && "ルートシグネチャーが...ない！");
@@ -116,12 +119,12 @@ public:
 			assert(false&&"定数バッファ用ディスクリプターヒープが...ない！");
 			return false;
 		}
-		if (!CameraConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Camera::ConstBufferData),0))
+		if (!CameraConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Camera::ConstBuffer),0))
 		{
 			assert(false&&"カメラ用コンスタントバッファが...ない！");
 			return false;
 		}
-		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Draw_Rsource::ConstBufferData),1))
+		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Quad_polygon::ConstBuffer),1))
 		{
 			assert(false&&"三角形ポリゴン用コンスタントバッファが...ない！");
 			return false;
@@ -191,7 +194,7 @@ public:
 			ID3D12DescriptorHeap* p[] = {ConstantBufferDH_Instance.GetHeap()};
 			CL_Instance.GetCommandList()->SetDescriptorHeaps(1,p);
 
-			Camera::ConstBufferData cameraData
+			Camera::ConstBuffer cameraData
 			{
 				DirectX::XMMatrixTranspose(Camera_Instance.ViewMatrix()),
 				DirectX::XMMatrixTranspose(Camera_Instance.Projection()),
@@ -207,7 +210,7 @@ public:
 			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
 
 			{
-				Draw_Rsource::ConstBufferData triangleData
+				Quad_polygon::ConstBuffer triangleData
 				{
 					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
 					TriangleObjectInstance.Color()
@@ -218,7 +221,7 @@ public:
 				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
 				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1,TrianglePolygonConstantBufferInstance.getGpuDescriptorHandle());
 
-				DR_Instance.Draw(CL_Instance);
+				QP_Instance.Draw(CL_Instance);
 			}
 			auto rtToP = resourceBarrier(R_Instance.GetResource(bckbffrIndex), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 			CL_Instance.GetCommandList()->ResourceBarrier(1, &rtToP);
@@ -268,7 +271,7 @@ private:
 	Pipline_state_object PSO_Instance{};
 	Descriptor_Heap ConstantBufferDH_Instance{};
 
-	Draw_Rsource DR_Instance{};
+	Quad_polygon QP_Instance{};
 	Object TriangleObjectInstance{};
 	Constant_buffer TrianglePolygonConstantBufferInstance{};
 
