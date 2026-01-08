@@ -23,7 +23,7 @@ void Camera::update()
 {
 	static float angle = 0.0f;
 
-	if (Input::instance().getKey(VK_LEFT))
+	/*if (Input::instance().getKey(VK_LEFT))
 	{
 		angle += eyeMoveSpeed;
 		position.x = destTargetToView * std::sinf(angle);
@@ -34,7 +34,7 @@ void Camera::update()
 		angle -= eyeMoveSpeed;
 		position.x = destTargetToView * std::sinf(angle);
 		position.z = destTargetToView * std::cosf(angle);
-	}
+	}*/
 
 	view = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&position), DirectX::XMLoadFloat3(&target), DirectX::XMLoadFloat3(&up));
 }

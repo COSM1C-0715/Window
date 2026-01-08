@@ -6,7 +6,7 @@ private:
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
 	DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
 
-	float move{};
+	float move = 0.02f;
 public:
 	struct ConstBuffer
 	{
