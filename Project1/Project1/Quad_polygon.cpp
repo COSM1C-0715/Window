@@ -42,7 +42,8 @@ bool Quad_polygon::createVertexBuffer(Device& device)
 	{
 		{{-0.5f,0.5f,0.0f},{1.0f,0.0f,1.0f,1.0f}},
 		{{0.5f,0.5f,0.0f},{0.0f,1.0f,1.0f,1.0f}},
-		{{0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}},
+		{{-0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}},
+		{{0.5f,-0.5f,0.0f},{0.0f,0.0f,1.0f,1.0f}}
 	};
 
 	auto vertexBufferSize = sizeof(triangleVertices);
@@ -100,7 +101,7 @@ bool Quad_polygon::createIndexBuffer(Device& device)
 {
 	uint16_t triangleIndices[] = 
 	{
-			0,1,2
+			0,1,2,3
 	};
 
 	auto indexBufferSize = sizeof(triangleIndices);
@@ -158,7 +159,7 @@ void Quad_polygon::Draw(Command_List& commandlist)
 	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView);
 	commandlist.GetCommandList()->IASetIndexBuffer(&IndexBufferView);
 
-	commandlist.GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandlist.GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	commandlist.GetCommandList()->DrawIndexedInstanced(3, 1, 0, 0, 0);
+	commandlist.GetCommandList()->DrawIndexedInstanced(4, 1, 0, 0, 0);
 }
