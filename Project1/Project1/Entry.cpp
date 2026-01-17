@@ -124,7 +124,7 @@ public:
 			assert(false&&"カメラ用コンスタントバッファが...ない！");
 			return false;
 		}
-		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Quad_polygon::ConstBuffer),1))
+		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Object::ConstBuffer),1))
 		{
 			assert(false&&"三角形ポリゴン用コンスタントバッファが...ない！");
 			return false;

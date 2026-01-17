@@ -9,20 +9,6 @@ namespace
 	};
 }
 
-Quad_polygon::~Quad_polygon()
-{
-	if (VertexBuffer)
-	{
-		VertexBuffer->Release();
-		VertexBuffer = nullptr;
-	}
-	if (IndexBuffer)
-	{
-		IndexBuffer->Release();
-		IndexBuffer = nullptr;
-	}
-}
-
 bool Quad_polygon::Create(Device& device)
 {
 	if (!createVertexBuffer(device))

@@ -60,7 +60,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE Render_Target::gethandle(Device& device, Descriptor_
 
 ID3D12Resource* Render_Target::GetResource(uint32_t index)
 {
-	if(index >= rn_tgt.size() || !rn_tgt[index]) 
+	if(index >= rn_tgt.size() || !rn_tgt[index])
 	{
 		assert(false && "不正なレンダーターゲットです");
 		return nullptr;
