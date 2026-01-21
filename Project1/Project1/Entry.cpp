@@ -210,7 +210,7 @@ public:
 			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
 
 			{
-				Quad_polygon::ConstBuffer triangleData
+				Object::ConstBuffer triangleData
 				{
 					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
 					TriangleObjectInstance.Color()
