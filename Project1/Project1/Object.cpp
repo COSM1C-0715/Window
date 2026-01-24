@@ -36,6 +36,11 @@ void Object::update()
 	/*move += 0.02f;
 	world = DirectX::XMMatrixTranslation(0.0f, std::sinf(move) * 1.5f, 0.0f);*/
 
+	/*if (Input::instance().getKey('B'))
+	{
+		
+	}*/
+
 	color = DirectX::XMFLOAT4(0.1f, 1.0f, 1.0f, 1.0f);
 }
 
