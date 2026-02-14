@@ -17,6 +17,12 @@ public:
 	Triangle_prigon() = default;
 	~Triangle_prigon() = default;
 
+	struct ConstBuffer
+	{
+		DirectX::XMMATRIX world{};
+		DirectX::XMFLOAT4 color{};
+	};
+
 	bool createVertexBuffer(Device& device);
 	bool createIndexBuffer(Device& device);
 

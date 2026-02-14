@@ -19,6 +19,13 @@ public:
 	bool createVertexBuffer(Device& device);
 	bool createIndexBuffer(Device& device);
 
-	void Draw(Command_List& commandlist);
+	struct ConstBuffer
+	{
+		DirectX::XMMATRIX world{};
+		DirectX::XMFLOAT4 color{};
+	};
+
+	ID3D12CommandList* Draw(Command_List& commandlist);
+
 	bool Create(Device& device);
 };

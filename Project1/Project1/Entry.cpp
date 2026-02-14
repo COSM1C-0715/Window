@@ -102,7 +102,7 @@ public:
 			assert(false && "三角形ポリゴンが...ない！");
 		}
 
-		TriangleObjectInstance.initialize({0.5f,0.3f,-0.5f},{0.1f,0.1f,0.1f,0.1f});
+		TriangleObjectInstance.initialize({0.7f,0.9f,-0.5f},{0.1f,0.1f,0.1f,0.1f});
 		//BulletObjectInstance.initialize({0.5,0.0f,-0.5f},{1,0.5f,0.5f,1});
 
 		if (!RS_Instance.Create(D_Instance))
@@ -123,7 +123,7 @@ public:
 
 		Camera_Instance.initialize();
 
-		if (!ConstantBufferDH_Instance.Create(D_Instance,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,2,true))
+		if (!ConstantBufferDH_Instance.Create(D_Instance,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,3,true))
 		{
 			assert(false&&"定数バッファ用ディスクリプターヒープが...ない！");
 			return false;
@@ -133,12 +133,12 @@ public:
 			assert(false&&"カメラ用コンスタントバッファが...ない！");
 			return false;
 		}
-		if (!QuadPolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Object::ConstBuffer),1))
+		if (!QuadPolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Quad_polygon::ConstBuffer),1))
 		{
 			assert(false&&"四角形ポリゴン用コンスタントバッファが...ない！");
 			return false;
 		}
-		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance, ConstantBufferDH_Instance, sizeof(Object::ConstBuffer), 1))
+		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance, ConstantBufferDH_Instance, sizeof(Triangle_prigon::ConstBuffer), 1))
 		{
 			assert(false && "三角形ポリゴン用コンスタントバッファが...ない！");
 			return false;
@@ -162,8 +162,9 @@ public:
 		{
 			Camera_Instance.update();
 
-			QuadObjectInstance.update();
+			TriangleObjectInstance.update();
 
+			QuadObjectInstance.update();
 			auto bckbffrIndex = S_Instance.GetSwapChain()->GetCurrentBackBufferIndex();
 
 			if (FrameFenceValue[bckbffrIndex] != 0)
@@ -234,7 +235,6 @@ public:
 				memcpy_s(pquadData, sizeof(QuadData), &QuadData, sizeof(QuadData));
 				QuadPolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
 				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1, QuadPolygonConstantBufferInstance.getGpuDescriptorHandle());
-
 				QP_Instance.Draw(CL_Instance);
 			}
 
@@ -242,11 +242,11 @@ public:
 				Object::ConstBuffer TriangleData
 				{
 					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
-					QuadObjectInstance.Color()
+					TriangleObjectInstance.Color()
 				};
 				UINT8* ptriangleData{};
 				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&ptriangleData));
-				memcpy_s(ptriangleData,sizeof(TriangleData),&TriangleData, sizeof(TriangleData));
+				memcpy_s(ptriangleData, sizeof(TriangleData), &TriangleData, sizeof(TriangleData));
 				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
 				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1, TrianglePolygonConstantBufferInstance.getGpuDescriptorHandle());
 				TP_Instance.Draw(CL_Instance);
@@ -256,7 +256,7 @@ public:
 
 			CL_Instance.GetCommandList()->Close();
 
-			ID3D12CommandList* ppCommandLists[] = { CL_Instance.GetCommandList() };
+			ID3D12CommandList* ppCommandLists[] = { CL_Instance.GetCommandList()};
 			CQ_Instance.Getcommandqueue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 			S_Instance.GetSwapChain()->Present(1, 0);

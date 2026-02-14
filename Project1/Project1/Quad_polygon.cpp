@@ -140,7 +140,7 @@ bool Quad_polygon::createIndexBuffer(Device& device)
 	return true;
 }
 
-void Quad_polygon::Draw(Command_List& commandlist)
+ID3D12CommandList* Quad_polygon::Draw(Command_List& commandlist)
 {
 	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView);
 	commandlist.GetCommandList()->IASetIndexBuffer(&IndexBufferView);
@@ -148,4 +148,5 @@ void Quad_polygon::Draw(Command_List& commandlist)
 	commandlist.GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	commandlist.GetCommandList()->DrawIndexedInstanced(4, 1, 0, 0, 0);
+	return commandlist.GetCommandList();
 }

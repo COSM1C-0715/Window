@@ -137,6 +137,7 @@
     <ClCompile Include="Command_List.cpp" />
     <ClCompile Include="Constant_buffer.cpp" />
     <ClCompile Include="Depth_buffer.cpp" />
+    <ClCompile Include="Object2.cpp" />
     <ClCompile Include="Quad_polygon.cpp" />
     <ClCompile Include="Fence.cpp" />
     <ClCompile Include="Descriptor_Heap.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Command_List.h" />
     <ClInclude Include="Constant_buffer.h" />
     <ClInclude Include="Depth_buffer.h" />
+    <ClInclude Include="Object2.h" />
     <ClInclude Include="Quad_polygon.h" />
     <ClInclude Include="Fence.h" />
     <ClInclude Include="Descriptor_Heap.h" />
