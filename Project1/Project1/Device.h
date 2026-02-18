@@ -4,9 +4,16 @@
 #pragma once
 class Device
 {
-public:
+private:
 	ID3D12Device* device;
 public:
+
+	static Device& instance()
+	{
+		static Device instance;
+		return instance;
+	}
+
 	Device() = default;
 	~Device();
 	bool CreateD3D12Device(DXGI& adapter);

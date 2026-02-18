@@ -5,7 +5,9 @@
 #include"Command_List.h"
 #include <wrl/client.h>
 #include<DirectXMath.h>
-class Triangle_prigon
+#include"About_GameObject.h"
+#include"Shape.h"
+class Triangle_prigon : public Shape
 {
 public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> TriangleVertexBuffer;
@@ -17,14 +19,9 @@ public:
 	Triangle_prigon() = default;
 	~Triangle_prigon() = default;
 
-	struct ConstBuffer
-	{
-		DirectX::XMMATRIX world{};
-		DirectX::XMFLOAT4 color{};
-	};
-
-	bool createVertexBuffer(Device& device);
-	bool createIndexBuffer(Device& device);
+private:
+	bool CreateVertexBuffer() override;
+	bool CreateIndexBuffer() override;
 
 	void Draw(Command_List& commandlist);
 	bool Create(Device& device);

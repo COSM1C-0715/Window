@@ -4,28 +4,16 @@
 #include"Command_List.h"
 #include <wrl/client.h>
 #include<DirectXMath.h>
+#include"About_GameObject.h"
+#include"Shape.h"
 #pragma once
-class Quad_polygon
+class Quad_polygon : public Shape
 {
-public:
-	Microsoft::WRL::ComPtr<ID3D12Resource>VertexBuffer;
-	Microsoft::WRL::ComPtr<ID3D12Resource>IndexBuffer;
-
-	D3D12_VERTEX_BUFFER_VIEW VertexBufferView;
-	D3D12_INDEX_BUFFER_VIEW IndexBufferView;
 public:
 	Quad_polygon() = default;
 	~Quad_polygon() = default;
-	bool createVertexBuffer(Device& device);
-	bool createIndexBuffer(Device& device);
-
-	struct ConstBuffer
-	{
-		DirectX::XMMATRIX world{};
-		DirectX::XMFLOAT4 color{};
-	};
-
+private:
+	virtual bool CreateVertexBuffer() override;
+	bool CreateIndexBuffer() override;
 	ID3D12CommandList* Draw(Command_List& commandlist);
-
-	bool Create(Device& device);
 };

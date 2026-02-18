@@ -19,8 +19,10 @@
 #include"Constant_buffer.h"
 #include"Camera.h"
 #include"Object.h"
+#include"Object2.h"
 #include"Quad_polygon.h"
 #include"Triangle_prigon.h"
+#include"Shape.h"
 
 class Application
 {
@@ -102,8 +104,7 @@ public:
 			assert(false && "三角形ポリゴンが...ない！");
 		}
 
-		TriangleObjectInstance.initialize({0.7f,0.9f,-0.5f},{0.1f,0.1f,0.1f,0.1f});
-		//BulletObjectInstance.initialize({0.5,0.0f,-0.5f},{1,0.5f,0.5f,1});
+		TriangleObjectInstance.initialize({0.7f,0.0f,-0.5f},{0.1f,0.1f,0.1f,0.1f});
 
 		if (!RS_Instance.Create(D_Instance))
 		{
@@ -133,14 +134,14 @@ public:
 			assert(false&&"カメラ用コンスタントバッファが...ない！");
 			return false;
 		}
-		if (!QuadPolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Quad_polygon::ConstBuffer),1))
-		{
-			assert(false&&"四角形ポリゴン用コンスタントバッファが...ない！");
-			return false;
-		}
-		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance, ConstantBufferDH_Instance, sizeof(Triangle_prigon::ConstBuffer), 1))
+		if (!TrianglePolygonConstantBufferInstance.Createcostantbuffer(D_Instance, ConstantBufferDH_Instance, sizeof(Shape::ConstBufferData), 1))
 		{
 			assert(false && "三角形ポリゴン用コンスタントバッファが...ない！");
+			return false;
+		}
+		if (!QuadPolygonConstantBufferInstance.Createcostantbuffer(D_Instance,ConstantBufferDH_Instance,sizeof(Shape::ConstBufferData),2))
+		{
+			assert(false&&"四角形ポリゴン用コンスタントバッファが...ない！");
 			return false;
 		}
 		if (!depthBufferDescriptorHeapInstance.Create(D_Instance,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1))
@@ -180,10 +181,14 @@ public:
 			CL_Instance.GetCommandList()->ResourceBarrier(1, &pToRT);
 
 			D3D12_CPU_DESCRIPTOR_HANDLE handles[] = { R_Instance.gethandle(D_Instance,DH_Instance,bckbffrIndex) };
-			CL_Instance.GetCommandList()->OMSetRenderTargets(1, handles, false, nullptr);
+			D3D12_CPU_DESCRIPTOR_HANDLE depthhandle = DB_Instance.Gethandle();
+
+			CL_Instance.GetCommandList()->OMSetRenderTargets(1, handles, false, &depthhandle);
 
 			float clearColor[] = {0.1f,0.35f,0.24f,0.2f};
 			CL_Instance.GetCommandList()->ClearRenderTargetView(handles[0], clearColor, 0, nullptr);
+
+			CL_Instance.GetCommandList()->ClearDepthStencilView(depthhandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0,0, nullptr);
 
 			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
 
@@ -225,6 +230,20 @@ public:
 			CL_Instance.GetCommandList()->SetPipelineState(PSO_Instance.GetPipeline());
 
 			{
+				Object2::ConstBuffer TriangleData
+				{
+					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
+					TriangleObjectInstance.Color()
+				};
+				UINT8* ptriangleData{};
+				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&ptriangleData));
+				memcpy_s(ptriangleData, sizeof(TriangleData), &TriangleData, sizeof(TriangleData));
+				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
+				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1, TrianglePolygonConstantBufferInstance.getGpuDescriptorHandle());
+				TP_Instance.Draw(CL_Instance);
+			}
+
+			{
 				Object::ConstBuffer QuadData
 				{
 					DirectX::XMMatrixTranspose(QuadObjectInstance.World()),
@@ -236,20 +255,6 @@ public:
 				QuadPolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
 				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1, QuadPolygonConstantBufferInstance.getGpuDescriptorHandle());
 				QP_Instance.Draw(CL_Instance);
-			}
-
-			{
-				Object::ConstBuffer TriangleData
-				{
-					DirectX::XMMatrixTranspose(TriangleObjectInstance.World()),
-					TriangleObjectInstance.Color()
-				};
-				UINT8* ptriangleData{};
-				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&ptriangleData));
-				memcpy_s(ptriangleData, sizeof(TriangleData), &TriangleData, sizeof(TriangleData));
-				TrianglePolygonConstantBufferInstance.ConstantBuffer()->Unmap(0, nullptr);
-				CL_Instance.GetCommandList()->SetGraphicsRootDescriptorTable(1, TrianglePolygonConstantBufferInstance.getGpuDescriptorHandle());
-				TP_Instance.Draw(CL_Instance);
 			}
 			auto rtToP = resourceBarrier(R_Instance.GetResource(bckbffrIndex), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 			CL_Instance.GetCommandList()->ResourceBarrier(1, &rtToP);
@@ -304,7 +309,7 @@ private:
 	Constant_buffer QuadPolygonConstantBufferInstance{};
 
 	Triangle_prigon TP_Instance{};
-	Object TriangleObjectInstance{};
+	Object2 TriangleObjectInstance{};
 	Constant_buffer TrianglePolygonConstantBufferInstance{};
 
 	Camera Camera_Instance{};

@@ -4,7 +4,7 @@
 #pragma once
 class Command_Allocator
 {
-public:
+private:
 	ID3D12CommandAllocator* C_Allo;
 
 	D3D12_COMMAND_LIST_TYPE List_Type;

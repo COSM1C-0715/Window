@@ -9,20 +9,7 @@ namespace
 	};
 }
 
-bool Quad_polygon::Create(Device& device)
-{
-	if (!createVertexBuffer(device))
-	{
-		return false;
-	}
-	if (!createIndexBuffer(device))
-	{
-		return false;
-	}
-	return true;
-}
-
-bool Quad_polygon::createVertexBuffer(Device& device)
+bool Quad_polygon::CreateVertexBuffer()
 {
 	Vertex triangleVertices[] = 
 	{
@@ -54,7 +41,7 @@ bool Quad_polygon::createVertexBuffer(Device& device)
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	auto res = device.GetDevice()->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&VertexBuffer));
+	auto res = Device::instance().GetDevice()->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&VertexBuffer));
 
 	if (FAILED(res))
 	{
@@ -80,17 +67,19 @@ bool Quad_polygon::createVertexBuffer(Device& device)
 	VertexBufferView.SizeInBytes = vertexBufferSize;
 	VertexBufferView.StrideInBytes = sizeof(Vertex);
 
+	Toporogy_ = porigon::type.Strip;
+
 	return true;
 }
 
-bool Quad_polygon::createIndexBuffer(Device& device)
+bool Quad_polygon::CreateIndexBuffer()
 {
-	uint16_t triangleIndices[] = 
+	uint16_t quadIndices[] = 
 	{
 			0,1,2,3
 	};
 
-	auto indexBufferSize = sizeof(triangleIndices);
+	auto indexBufferSize = sizeof(quadIndices);
 
 	D3D12_HEAP_PROPERTIES heapProperty{};
 	heapProperty.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -112,7 +101,7 @@ bool Quad_polygon::createIndexBuffer(Device& device)
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	resourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	auto res = device.GetDevice()->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&IndexBuffer));
+	auto res = Device::instance().GetDevice()->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&IndexBuffer));
 
 	if (FAILED(res))
 	{
@@ -129,13 +118,15 @@ bool Quad_polygon::createIndexBuffer(Device& device)
 		return false;
 	}
 
-	memcpy_s(data, indexBufferSize, triangleIndices, indexBufferSize);
+	memcpy_s(data, indexBufferSize, quadIndices, indexBufferSize);
 
 	IndexBuffer->Unmap(0, nullptr);
 
 	IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
 	IndexBufferView.SizeInBytes = indexBufferSize;
 	IndexBufferView.Format = DXGI_FORMAT_R16_UINT;
+
+	IndexCount_ = _countof(quadIndices);
 
 	return true;
 }
@@ -145,7 +136,7 @@ ID3D12CommandList* Quad_polygon::Draw(Command_List& commandlist)
 	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView);
 	commandlist.GetCommandList()->IASetIndexBuffer(&IndexBufferView);
 
-	commandlist.GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	commandlist.GetCommandList()->IASetPrimitiveTopology(porigon::type.Strip);
 
 	commandlist.GetCommandList()->DrawIndexedInstanced(4, 1, 0, 0, 0);
 	return commandlist.GetCommandList();

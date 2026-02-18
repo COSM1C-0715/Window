@@ -17,7 +17,7 @@ public:
 	Object() = default;
 	~Object() = default;
 
-	void initialize(DirectX::XMFLOAT3 pos,DirectX::XMFLOAT4 color);
+	void initialize(DirectX::XMFLOAT3 pos,DirectX::XMFLOAT4 color_);
 
 	void update();
 

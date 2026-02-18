@@ -1,23 +1,34 @@
 #pragma once
 #include<DirectXMath.h>
-class Object2
+#include<d3d12.h>
+class Object_Bullet
 {
 private:
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
-	DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(1.0f,1.0f, 1.0f, 1.0f);
+	UINT64 typeId;
 public:
-	struct ConstBuffer
+	struct ConstantBuffer
 	{
 		DirectX::XMMATRIX world{};
 		DirectX::XMFLOAT4 color{};
 	};
 public:
-	Object2() = default;
-	~Object2() = default;
+	Object_Bullet() = default;
+	~Object_Bullet() = default;
 
 	void initialize(DirectX::XMFLOAT3 pos, DirectX::XMFLOAT4 color_);
-
 	void update();
+
+	UINT64 typeId()
+	{
+		return typeId;
+	};
+
+	void SetTypeID(UINT64 id)
+	{
+		typeId = id;
+	};
 
 	DirectX::XMMATRIX World();
 

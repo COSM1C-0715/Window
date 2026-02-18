@@ -1,5 +1,4 @@
 #include"Triangle_prigon.h"
-
 namespace
 {
 	struct vertex
@@ -11,18 +10,18 @@ namespace
 
 bool Triangle_prigon::Create(Device& device)
 {
-	if (!createVertexBuffer(device))
+	if (!CreateVertexBuffer())
 	{
 		return false;
 	}
-	if (!createIndexBuffer(device))
+	if (!CreateIndexBuffer())
 	{
 		return false;
 	}
 	return true;
 }
 
-bool Triangle_prigon::createVertexBuffer(Device& device)
+bool Triangle_prigon::CreateVertexBuffer()
 {
 	vertex TriangleVertex[]
 	{
@@ -53,7 +52,7 @@ bool Triangle_prigon::createVertexBuffer(Device& device)
 	Triangle_Resource_Desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	Triangle_Resource_Desc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	auto res = device.GetDevice()->CreateCommittedResource(&Triangle_Props,D3D12_HEAP_FLAG_NONE,&Triangle_Resource_Desc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,IID_PPV_ARGS(&TriangleVertexBuffer));
+	auto res = Device::instance().GetDevice()->CreateCommittedResource(&Triangle_Props, D3D12_HEAP_FLAG_NONE, &Triangle_Resource_Desc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&TriangleVertexBuffer));
 
 	if (FAILED(res))
 	{
@@ -76,7 +75,7 @@ bool Triangle_prigon::createVertexBuffer(Device& device)
 	return true;
 }
 
-bool Triangle_prigon::createIndexBuffer(Device& device)
+bool Triangle_prigon::CreateIndexBuffer()
 {
 	uint16_t Triangle_Index[]
 	{
@@ -105,7 +104,7 @@ bool Triangle_prigon::createIndexBuffer(Device& device)
 	Triangle_Resource_Desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	Triangle_Resource_Desc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-	auto res = device.GetDevice()->CreateCommittedResource(&TriangleProps, D3D12_HEAP_FLAG_NONE, &Triangle_Resource_Desc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&TriangleIndexBuffer));
+	auto res = Device::instance().GetDevice()->CreateCommittedResource(&TriangleProps, D3D12_HEAP_FLAG_NONE, &Triangle_Resource_Desc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&TriangleIndexBuffer));
 
 	uint16_t* data{};
 
@@ -126,7 +125,7 @@ void Triangle_prigon::Draw(Command_List& commandlist)
 	commandlist.GetCommandList()->IASetVertexBuffers(0,1,&Triangle_VBV);
 	commandlist.GetCommandList()->IASetIndexBuffer(&Triangle_IBV);
 
-	commandlist.GetCommandList()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	commandlist.GetCommandList()->IASetPrimitiveTopology(porigon::type.list);
 
 	commandlist.GetCommandList()->DrawIndexedInstanced(3,1,0,0,0);
 }
