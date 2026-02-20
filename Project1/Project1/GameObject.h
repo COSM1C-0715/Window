@@ -19,7 +19,7 @@ public:
 public:
 	void SetHandle();
 	UINT64 Handle();
-	void Set();
+	void Set(DirectX::XMFLOAT3 Pos, DirectX::XMFLOAT3 Rot, DirectX::XMFLOAT3 Scale);
 protected:
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 	DirectX::XMFLOAT4 Color = DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f);

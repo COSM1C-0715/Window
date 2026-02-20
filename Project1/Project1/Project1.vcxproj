@@ -137,6 +137,7 @@
     <ClCompile Include="Command_List.cpp" />
     <ClCompile Include="Constant_buffer.cpp" />
     <ClCompile Include="Depth_buffer.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObject_Manager.cpp" />
     <ClCompile Include="Object2.cpp" />
     <ClCompile Include="Object_Bullet.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Command_List.h" />
     <ClInclude Include="Constant_buffer.h" />
     <ClInclude Include="Depth_buffer.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObject_Manager.h" />
     <ClInclude Include="Object2.h" />
     <ClInclude Include="Object_Bullet.h" />
