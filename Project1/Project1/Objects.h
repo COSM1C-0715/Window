@@ -14,7 +14,9 @@ public:
 	virtual void Update();
 
 	virtual void SetDrawCommand(Command_List& commandList,UINT Slot);
-
+public:
+	virtual void CreateDrawBuffer() = 0;
+	virtual void UpdateDrawBuffer() = 0;
 public:
 	UINT64 TypeId()
 	{

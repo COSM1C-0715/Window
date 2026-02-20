@@ -63,9 +63,9 @@ bool Quad_polygon::CreateVertexBuffer()
 
 	VertexBuffer->Unmap(0, nullptr);
 
-	VertexBufferView.BufferLocation = VertexBuffer->GetGPUVirtualAddress();
-	VertexBufferView.SizeInBytes = vertexBufferSize;
-	VertexBufferView.StrideInBytes = sizeof(Vertex);
+	VBV_.BufferLocation = VertexBuffer->GetGPUVirtualAddress();
+	VBV_.SizeInBytes = vertexBufferSize;
+	VBV_.StrideInBytes = sizeof(Vertex);
 
 	Toporogy_ = porigon::type.Strip;
 
@@ -122,9 +122,9 @@ bool Quad_polygon::CreateIndexBuffer()
 
 	IndexBuffer->Unmap(0, nullptr);
 
-	IndexBufferView.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
-	IndexBufferView.SizeInBytes = indexBufferSize;
-	IndexBufferView.Format = DXGI_FORMAT_R16_UINT;
+	IBV_.BufferLocation = IndexBuffer->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = indexBufferSize;
+	IBV_.Format = DXGI_FORMAT_R16_UINT;
 
 	IndexCount_ = _countof(quadIndices);
 
@@ -133,8 +133,8 @@ bool Quad_polygon::CreateIndexBuffer()
 
 ID3D12CommandList* Quad_polygon::Draw(Command_List& commandlist)
 {
-	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView);
-	commandlist.GetCommandList()->IASetIndexBuffer(&IndexBufferView);
+	commandlist.GetCommandList()->IASetVertexBuffers(0, 1, &VBV_);
+	commandlist.GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	commandlist.GetCommandList()->IASetPrimitiveTopology(porigon::type.Strip);
 

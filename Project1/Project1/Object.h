@@ -1,6 +1,7 @@
 #pragma once
 #include<DirectXMath.h>
-class Object
+#include"Objects.h"
+class Object : public Objects
 {
 private:
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();

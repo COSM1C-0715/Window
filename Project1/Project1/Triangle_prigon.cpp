@@ -68,9 +68,9 @@ bool Triangle_prigon::CreateVertexBuffer()
 
 	TriangleVertexBuffer->Unmap(0, nullptr);
 
-	Triangle_VBV.BufferLocation = TriangleVertexBuffer->GetGPUVirtualAddress();
-	Triangle_VBV.SizeInBytes = Triangle_Vertex_size;
-	Triangle_VBV.StrideInBytes = sizeof(vertex);
+	VBV_.BufferLocation = TriangleVertexBuffer->GetGPUVirtualAddress();
+	VBV_.SizeInBytes = Triangle_Vertex_size;
+	VBV_.StrideInBytes = sizeof(vertex);
 
 	return true;
 }
@@ -114,18 +114,8 @@ bool Triangle_prigon::CreateIndexBuffer()
 
 	TriangleIndexBuffer->Unmap(0,nullptr);
 
-	Triangle_IBV.BufferLocation = TriangleIndexBuffer->GetGPUVirtualAddress();
-	Triangle_IBV.SizeInBytes = TriangleIndex_size;
-	Triangle_IBV.Format = DXGI_FORMAT_R16_UINT;
+	IBV_.BufferLocation = TriangleIndexBuffer->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = TriangleIndex_size;
+	IBV_.Format = DXGI_FORMAT_R16_UINT;
 	return true;
-}
-
-void Triangle_prigon::Draw(Command_List& commandlist)
-{
-	commandlist.GetCommandList()->IASetVertexBuffers(0,1,&Triangle_VBV);
-	commandlist.GetCommandList()->IASetIndexBuffer(&Triangle_IBV);
-
-	commandlist.GetCommandList()->IASetPrimitiveTopology(porigon::type.list);
-
-	commandlist.GetCommandList()->DrawIndexedInstanced(3,1,0,0,0);
 }
