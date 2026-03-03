@@ -10,3 +10,13 @@ namespace porigon
 
 	DrawingType type;
 }
+
+namespace id
+{
+	template<class T>
+	UINT64 Get()
+	{
+		static char val{};
+		return reinterpret_cast<UINT64>(&val);
+	}
+}

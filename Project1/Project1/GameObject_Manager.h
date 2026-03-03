@@ -1,11 +1,13 @@
 #pragma once
 #include<functional>
 #include<d3d12.h>
+#include<memory>
+#include"GameObject.h"
 class GameObject_Manager
 {
 private:
 	UINT64 counter_;
-	void RegisterCreation();
+	void RegisterCreation(std::function<std::unique_ptr<GameObject>()> Creation,UINT64 handle);
 public:
 	void update();
 public:

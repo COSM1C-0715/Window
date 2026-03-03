@@ -1,6 +1,11 @@
 #include "Constant_buffer.h"
+#include"Descriptor_Heap.h"
 #include<cassert>
 #include<DirectXMath.h>
+namespace
+{
+	auto heapType_ = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+}
 Constant_buffer::~Constant_buffer()
 {
 	if (constantBuffer)
@@ -9,9 +14,9 @@ Constant_buffer::~Constant_buffer()
 		constantBuffer = nullptr;
 	}
 }
-bool Constant_buffer::Createcostantbuffer(Device& device, Descriptor_Heap& heap, UINT buffersize, UINT descriptorIndex)
+bool Constant_buffer::Createcostantbuffer(UINT bufferSize)
 {
-	auto size = (sizeof(buffersize) + 255) & ~255;
+	auto size = (sizeof(bufferSize) + 255) & ~255;
 
 	D3D12_HEAP_PROPERTIES heapProps{};
 	heapProps.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -25,7 +30,7 @@ bool Constant_buffer::Createcostantbuffer(Device& device, Descriptor_Heap& heap,
 	resourceDesc.SampleDesc.Count = 1;
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	auto res = device.GetDevice()->CreateCommittedResource(&heapProps,D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,IID_PPV_ARGS(&constantBuffer));
+	auto res = Device::instance().GetDevice()->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&constantBuffer));
 
 	if (FAILED(res))
 	{
@@ -33,35 +38,40 @@ bool Constant_buffer::Createcostantbuffer(Device& device, Descriptor_Heap& heap,
 		return false;
 	}
 
-	auto heapType = heap.gettype();
-	if (heapType != D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+	auto descriptorIndex = DescriptorHeapContainer::instance().AllocateDescriptor(heapType_);
+
+	if (heapType_ != D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
 	{
 		assert(false&&"ディスクリプターヒープのタイプがCBV_SRV_UAVではありませーん");
 		return false;
 	}
 
+	descriptorIndex_ = descriptorIndex.value();
+
+	auto heap = DescriptorHeapContainer::instance().GetHeap(heapType_);
+
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvdesc{};
 	cbvdesc.BufferLocation = constantBuffer->GetGPUVirtualAddress();
 	cbvdesc.SizeInBytes = size;
 
-	UINT cbvDescriptorSize = device.GetDevice()->GetDescriptorHandleIncrementSize(heap.gettype());
+	UINT cbvDescriptorSize = Device::instance().GetDevice()->GetDescriptorHandleIncrementSize(heapType_);
 
-	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = heap.GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = heap->GetCPUDescriptorHandleForHeapStart();
 
-	cpuHandle.ptr += descriptorIndex * cbvDescriptorSize;
+	cpuHandle.ptr += descriptorIndex_ * cbvDescriptorSize;
 
-	device.GetDevice()->CreateConstantBufferView(&cbvdesc, cpuHandle);
+	Device::instance().GetDevice()->CreateConstantBufferView(&cbvdesc, cpuHandle);
 
-	gpuHandle = heap.GetHeap()->GetGPUDescriptorHandleForHeapStart();
+	gpuHandle = heap->GetGPUDescriptorHandleForHeapStart();
 
-	gpuHandle.ptr += descriptorIndex * cbvDescriptorSize;
+	gpuHandle.ptr += descriptorIndex_ * cbvDescriptorSize;
 
 	return true;
 }
 ID3D12Resource* Constant_buffer::ConstantBuffer()
 {
 	assert(constantBuffer && "コンスタントバッファ作れてへん");
-	return constantBuffer;
+	return constantBuffer.Get();
 }
 D3D12_GPU_DESCRIPTOR_HANDLE Constant_buffer::getGpuDescriptorHandle()
 {
