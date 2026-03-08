@@ -29,7 +29,7 @@ public:
 	};
 protected:
 	template<class T>
-	void UpdateConstantBuffer(T& data)
+	void UpdateConstantBuffer(const T& data)
 	{
 		std::byte* dst{};
 		ConstantBuffer_.ConstantBuffer()->Map(0, nullptr, reinterpret_cast<void**>(&dst));

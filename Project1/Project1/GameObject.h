@@ -17,9 +17,9 @@ public:
 	virtual void CreateDrawBuffer() override;
 	virtual void UpdateDrawBuffer() override;
 public:
-	void SetHandle();
+	void SetHandle(UINT64 handle);
 	UINT64 Handle();
-	void Set(DirectX::XMFLOAT3 Pos, DirectX::XMFLOAT3 Rot, DirectX::XMFLOAT3 Scale);
+	void Set(DirectX::XMFLOAT3 Pos, DirectX::XMFLOAT3 Rot, DirectX::XMFLOAT3 Scale, DirectX::XMFLOAT4 color, UINT64 ShapeId);
 protected:
 	DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
 	DirectX::XMFLOAT4 Color = DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
